@@ -1,0 +1,21 @@
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6c757d;
+
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #495057;
+  }
+
+  p {
+    font-size: 1.1rem;
+  }
+}

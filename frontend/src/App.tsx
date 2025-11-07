@@ -1,12 +1,17 @@
 import './App.css'
+import { Tasks } from "./pages/tasks";
+// import { Outlet } from 'react-router-dom';
+// import { Menu } from "./components/menu";
+// import { Header } from "./components/header";
 
 function App() {
 
   return (
     <>
-      <div className="card">
-
-      </div>
+      {/*<Menu />*/}
+      {/*<Header />*/}
+      {/*<Outlet />*/}
+      <Tasks />
     </>
   )
 }

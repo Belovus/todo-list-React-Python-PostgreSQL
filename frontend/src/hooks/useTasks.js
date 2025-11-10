@@ -54,54 +54,14 @@ export const useTasks = () => {
     }
   };
 
-  const toggleTimer = async (taskId, currentTask) => {
-    const currentTime = Date.now();
-    if (currentTask.timer.isRunning) {
-      const elapsed = currentTime - currentTask.timer.startTime;
-      const updatedTimer = {
-        ...currentTask.timer,
-        isRunning: false,
-        totalTime: currentTask.timer.totalTime + elapsed,
-        startTime: null
-      };
-      return await updateTask(taskId, {
-        ...currentTask,
-        timer: updatedTimer
-      });
-    } else {
-      const updatedTimer = {
-        ...currentTask.timer,
-        isRunning: true,
-        startTime: currentTime
-      };
-      return await updateTask(taskId, {
-        ...currentTask,
-        status: 'in_progress',
-        timer: updatedTimer
-      });
-    }
-  };
-
   const updateTaskStatus = async (taskId, newStatus, currentTask) => {
-    const updateData = { ...currentTask, status: newStatus };
-    if (newStatus === 'in_progress' && !currentTask.timer.isRunning) {
-      updateData.timer = {
-        ...currentTask.timer,
-        isRunning: true,
-        startTime: Date.now()
-      };
+    try {
+      const updateData = { ...currentTask, status: newStatus };
+      return await updateTask(taskId, updateData);
+    } catch (err) {
+      setError(err.message);
+      throw err;
     }
-    if (currentTask.status === 'in_progress' && newStatus !== 'in_progress') {
-      const currentTime = Date.now();
-      const elapsed = currentTime - currentTask.timer.startTime;
-      updateData.timer = {
-        ...currentTask.timer,
-        isRunning: false,
-        totalTime: currentTask.timer.totalTime + elapsed,
-        startTime: null
-      };
-    }
-    return await updateTask(taskId, updateData);
   };
 
   useEffect(() => {
@@ -116,7 +76,6 @@ export const useTasks = () => {
     updateTask,
     deleteTask,
     loadTasks,
-    toggleTimer,
     updateTaskStatus,
   };
 };

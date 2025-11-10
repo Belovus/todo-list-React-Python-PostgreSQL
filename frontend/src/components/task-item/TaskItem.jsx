@@ -1,35 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './TaskItem.scss';
 
-const TaskItem = ({ task, onUpdateStatus, onDeleteTask, onToggleTimer }) => {
-  const [currentTime, setCurrentTime] = useState(Date.now());
+const TaskItem = ({ task, onUpdateStatus, onDeleteTask }) => {
   const [updating, setUpdating] = useState(false);
   const [deleting, setDeleting] = useState(false);
-
-  useEffect(() => {
-    if (task.timer.isRunning) {
-      const interval = setInterval(() => {
-        setCurrentTime(Date.now());
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [task.timer.isRunning]);
-
-  const getTotalTime = () => {
-    let total = task.timer.totalTime || 0;
-    if (task.timer.isRunning && task.timer.startTime) {
-      total += currentTime - task.timer.startTime;
-    }
-    return total;
-  };
-
-  const formatTime = (ms) => {
-    const totalSeconds = Math.floor(ms / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
 
   const getStatusText = (status) => {
     const statusMap = {
@@ -61,17 +35,6 @@ const TaskItem = ({ task, onUpdateStatus, onDeleteTask, onToggleTimer }) => {
     }
   };
 
-  const handleToggleTimer = async () => {
-    setUpdating(true);
-    try {
-      await onToggleTimer(task.id);
-    } catch (error) {
-      console.error('Failed to toggle timer:', error);
-    } finally {
-      setUpdating(false);
-    }
-  };
-
   const handleDelete = async () => {
     setDeleting(true);
     try {
@@ -95,10 +58,6 @@ const TaskItem = ({ task, onUpdateStatus, onDeleteTask, onToggleTimer }) => {
         {task.description && (
           <p className="task-description">{task.description}</p>
         )}
-        <div className="task-timer">
-          <span className="timer-label">Затраченное время:</span>
-          <span className="timer-value">{formatTime(getTotalTime())}</span>
-        </div>
         <div className="task-actions">
           <div className="status-actions">
             <select
@@ -111,13 +70,6 @@ const TaskItem = ({ task, onUpdateStatus, onDeleteTask, onToggleTimer }) => {
               <option value="in_progress">В работе</option>
               <option value="done">Выполнено</option>
             </select>
-            <button
-              onClick={handleToggleTimer}
-              className={`timer-btn ${task.timer.isRunning ? 'stop' : 'start'}`}
-              disabled={updating || deleting || task.status === 'done'}
-            >
-              {updating ? '⏳' : task.timer.isRunning ? '⏸️ Остановить' : '▶️ Запустить'}
-            </button>
           </div>
           <button
             onClick={handleDelete}

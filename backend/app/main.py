@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from app.api.endpoints.tasks import router as tasks_router
+from .api.endpoints.tasks import (router as tasks_router)
 from .models.database import engine, Base
+from fastapi.middleware.cors import CORSMiddleware
 
 try:
     Base.metadata.create_all(bind=engine)
@@ -13,6 +14,20 @@ app = FastAPI(
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost",
+        "http://localhost:5173",
+        "http://frontend:5173",
+        "http://nginx",
+        "http://localhost:80"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(tasks_router, prefix="/api/v1/tasks", tags=["tasks"])

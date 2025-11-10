@@ -2,7 +2,7 @@ import React from 'react';
 import { TaskItem } from '../task-item';
 import './TaskList.scss';
 
-const TaskList = ({ tasks, onUpdateStatus, onDeleteTask, onToggleTimer, loading }) => {
+const TaskList = ({ tasks, onUpdateStatus, onDeleteTask, loading }) => {
   if (tasks.length === 0 && !loading) {
     return (
       <div className="empty-state">
@@ -20,7 +20,6 @@ const TaskList = ({ tasks, onUpdateStatus, onDeleteTask, onToggleTimer, loading 
           task={task}
           onUpdateStatus={onUpdateStatus}
           onDeleteTask={onDeleteTask}
-          onToggleTimer={onToggleTimer}
         />
       ))}
     </div>

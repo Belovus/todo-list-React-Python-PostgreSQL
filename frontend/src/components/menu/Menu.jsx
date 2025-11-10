@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Menu.scss';
 import MenuIcon from "../../assets/menu.svg";
-import { MENU_NAVIGATION } from '../../configs/menu-navigation.ts';
+import { MENU_NAVIGATION } from '../../configs/menu-navigation.js';
 import { useNavigate } from 'react-router';
 
 const Menu = () => {

@@ -15,7 +15,6 @@ const Tasks = () => {
     createTask,
     deleteTask,
     loadTasks,
-    toggleTimer,
     updateTaskStatus,
   } = useTasks();
 
@@ -34,11 +33,6 @@ const Tasks = () => {
       title,
       description,
       status: 'pending',
-      timer: {
-        isRunning: false,
-        startTime: null,
-        totalTime: 0
-      }
     };
     await createTask(newTaskData);
   };
@@ -52,13 +46,6 @@ const Tasks = () => {
 
   const handleDeleteTask = async (taskId) => {
     await deleteTask(taskId);
-  };
-
-  const handleToggleTimer = async (taskId) => {
-    const task = tasks.find(t => t.id === taskId);
-    if (task) {
-      await toggleTimer(taskId, task);
-    }
   };
 
   const handleFilterChange = (newFilter) => {
@@ -104,7 +91,6 @@ const Tasks = () => {
         tasks={tasks}
         onUpdateStatus={handleUpdateStatus}
         onDeleteTask={handleDeleteTask}
-        onToggleTimer={handleToggleTimer}
         loading={loading}
       />
       {tasks.length > 0 && (

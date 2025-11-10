@@ -45,10 +45,6 @@ class TaskApi {
     return this.request(endpoint);
   }
 
-  async getTaskById(taskId) {
-    return this.request(`/tasks/${taskId}`);
-  }
-
   async updateTask(taskId, updateData) {
     return this.request(`/tasks/${taskId}`, {
       method: 'PUT',
